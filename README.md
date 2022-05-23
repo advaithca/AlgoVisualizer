@@ -3,4 +3,4 @@
 
 # Screenshots
 ## Bubble Sort
-[[!Bubble Sort]](SS1.png)
+![Bubble Sort](SS1.png)
