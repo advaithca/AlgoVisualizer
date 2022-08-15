@@ -28,54 +28,62 @@ def bubbleSort( array: list, asc: bool):
                     array[j], array[j+1] = array[j+1], array[j]
                     ARRAY.append(array.copy())
 
-def mergeSort(arr, asc):
-    global ARRAY
-    if len(arr) > 1:
-        mid = len(arr)//2
+def mergeSort(a):
+    # start with least partition size of 2^0 = 1
+    width = 1    
+    n = len(a)                                          
+    # subarray size grows by powers of 2 
+    # since growth of loop condition is exponential, 
+    # time consumed is logarithmic (log2n)
+    while (width < n):
+        # always start from leftmost
+        l=0;
+        while (l < n): 
+            r = min(l+(width*2-1), n-1)         
+            m = min(l+width-1,n-1)
+            # final merge should consider 
+            # unmerged sublist if input arr
+            # size is not power of 2              
+            merge(a, l, m, r)
+            l += width*2
+        # Increasing sub array size by powers of 2
+        width *= 2
+    return a
+    
+# Merge Function 
+def merge(a, l, m, r): 
+    n1 = m - l + 1
+    n2 = r - m 
+    L = [0] * n1 
+    R = [0] * n2 
+    for i in range(0, n1): 
+        L[i] = a[l + i] 
+    for i in range(0, n2): 
+        R[i] = a[m + i + 1] 
   
-        L = arr[:mid]
-  
-        R = arr[mid:]
-  
-        mergeSort(L,asc)
-  
-        mergeSort(R,asc)
-  
-        i = j = k = 0
-
-        while i < len(L) and j < len(R):
-            if asc:
-                if L[i] < R[j]:
-                    arr[k] = L[i]
-                    i += 1
-                else:
-                    arr[k] = R[j]
-                    j += 1
-            else:
-                if L[i] > R[j]:
-                    arr[k] = L[i]
-                    i += 1
-                else:
-                    arr[k] = R[j]
-                    j += 1
-            k += 1
-            ARRAY.append(arr.copy())
-  
-        while i < len(L):
-            arr[k] = L[i]
+    i, j, k = 0, 0, l 
+    while i < n1 and j < n2: 
+        if L[i] <= R[j]: 
+            a[k] = L[i] 
             i += 1
-            k += 1
-            ARRAY.append(arr.copy())
-  
-        while j < len(R):
-            arr[k] = R[j]
+        else: 
+            a[k] = R[j] 
             j += 1
-            k += 1
-            ARRAY.append(arr.copy())
-    return arr
+        k += 1
+  
+    while i < n1: 
+        a[k] = L[i] 
+        i += 1
+        k += 1
+  
+    while j < n2: 
+        a[k] = R[j] 
+        j += 1
+        k += 1
+    ARRAY.append(a.copy())
 
-bubbleSort(array,True)
-# A = mergeSort(array,True)
+# bubbleSort(array,False)
+mergeSort(array)
 def init():
     glClearColor(0.0,0.0,0.0,1.0)
     gluOrtho2D(100.0,1000.0,100.0,1000.0)
@@ -96,7 +104,6 @@ def drawfunc():
     glutSwapBuffers()
 
 i = 0
-
 def update(val):
     global CURRENT, ARRAY, i
     glutPostRedisplay()
