@@ -1,6 +1,6 @@
 # AlgoVisualizer
  Visualizes Sorting algorithms in OpenGL.
- Right now, Bubble Sort has been visualized, will do others in the coming few units of time.
+ Right now, Bubble Sort and Merge Sort has been visualized, will do others in the coming few units of time.
 
 # Screenshots
 ## Bubble Sort
